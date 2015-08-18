@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>广告与门店管理</title>
+	<link type="text/css" href="css/table.css" rel="stylesheet" />
+	<link type="text/css" href="css/tab.css" rel="stylesheet" />
+	<script type="text/javascript">
+	function nTabs(thisObj,Num){
+		if(thisObj.className == "active")return;
+		var tabObj = thisObj.parentNode.id;
+		var tabList = document.getElementById(tabObj).getElementsByTagName("li");
+		for(i=0; i <tabList.length; i++)
+		{
+		  if (i == Num)
+		  {
+		   thisObj.className = "active"; 
+			  document.getElementById(tabObj+"_Content"+i).style.display = "block";
+		  }else{
+		   tabList[i].className = "normal"; 
+		   document.getElementById(tabObj+"_Content"+i).style.display = "none";
+		  }
+		} 
+	}
+	</script>
+</head>
+<body>
+<div class="nTab">
+	<div class="TabTitle">
+		<ul id="myTab">
+			<li class="active" onmouseover="nTabs(this,0);">广告</li>
+			<li class="normal" onmouseover="nTabs(this,1);">门店</li> 			      
+		</ul>
+	</div>
+	<div class="TabContent">
+	<div id="myTab_Content0">
+		<table class="bordered new-bordered">
+		<tr>
+			<td><input type="text" style="width:175px;color:gray;height:20px;font-size:18px;" value="广告名" onfocus="if(this.value=='广告名'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='广告名'){this.value='广告名';this.style.color='gray';}"/><a id="inquire-submit">查询</a></td>
+		</tr>
+		</table>
+		<table class="bordered rules-bordered">
+			<thead>
+			<tr>      
+				<th>广告名</th>
+				<th>位置</th>      
+				<th>开始日期</th>
+				<th>结束日期</th>
+				<th>编辑</th>
+			</tr>
+			</thead>
+			<tr> 
+				<td>洋河大曲</td>  
+				<td>image-list-1</td>  
+				<td>2014.10.10</td>  
+				<td>2014.10.10</td>  
+				<td><a id="table-submit" href="office-newad.html">编辑</a></td>   			
+			</tr>  		
+		</table>
+		<table class="page">
+			<tr>
+				<td><a href="">首页</a></td>
+				<td><a href="">上页</a></td>
+				<td style="width:50px;">1/5</td>
+				<td><a href="">下页</a></td>
+				<td><a href="">尾页</a></td>
+			</tr>
+		</table>
+	</div>
+	<div id="myTab_Content1" class="none">
+		<table class="bordered new-bordered">
+			<tr>
+				<td><input type="text" style="width:175px;color:gray;height:20px;font-size:18px;" value="店名" onfocus="if(this.value=='店名'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='店名'){this.value='店名';this.style.color='gray';}"/><a id="inquire-submit">查询</a></td>
+			</tr>
+		</table>
+		<table class="bordered rules-bordered">
+			<thead>
+			<tr>      
+				<th>编号</th>
+				<th>店名</th>      
+				<th>位置</th>
+				<th>店长</th>
+				<th>联系方式</th>
+				<th>编辑</th>
+			</tr>
+			</thead>
+			<tr> 
+				<td>001</td>  
+				<td>猫屎咖啡</td>  
+				<td>A23-01</td>  
+				<td>张尼玛</td>  
+				<td>11111111111</td>
+				<td><a id="table-submit" href="office-newstore.html">编辑</a></td>   			
+			</tr>  		
+		</table>
+		<table class="page">
+			<tr>
+				<td><a href="">首页</a></td>
+				<td><a href="">上页</a></td>
+				<td style="width:50px;">1/5</td>
+				<td><a href="">下页</a></td>
+				<td><a href="">尾页</a></td>
+			</tr>
+		</table>
+	</div>
+	</div>	
+</div>
+</body>
+</html>

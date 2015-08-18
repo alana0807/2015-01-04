@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>业主信息管理</title>
+	<link type="text/css" href="css/table.css" rel="stylesheet" />
+	<link type="text/css" href="css/mail.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript">
+		$(function(){
+		   var showDiv = document.getElementById('showDiv');
+		   showDiv.style.display="none";
+		   $('tr').hover(function(e){
+				$('#show').html(getText(this));
+				DialogSwitch('showDiv','block',mouseOffset(e).left,getOffset($(this).attr('id')).top);
+		   },function(){
+				$('#show').html(getText(this));
+				DialogSwitch('showDiv','none',0,0);
+		   });
+		});
+		function  getText(id){
+		  return $(id).find('td:eq(0)').html();
+		}
+		function DialogSwitch(id,sty,l,t){
+		 var showDiv = document.getElementById(id);
+		 showDiv.style.position="absolute"; 
+		 showDiv.style.display=sty;
+		 showDiv.style.marginLeft=l-300;
+		 showDiv.style.marginTop= (t-getOffset(id).top);
+		}
+		function getOffset(id){
+			var left = $('#'+id).offset().left;
+			var top  = $('#'+id).offset().top;
+			return {left:left,top:top};
+		}
+		var Mouse = function(e){
+            mouse = new MouseEvent(e);
+            var leftpos = mouse.x;
+            var toppos = mouse.y;
+            return {left:leftpos,top:toppos};
+        }
+        function mouseOffset(e){
+            var  mouse = new MouseEvent(e);
+            var leftpos = mouse.x;
+            var toppos = mouse.y;
+            return {left:leftpos,top:toppos};
+        }
+        var MouseEvent = function(e) {
+            this.x = e.pageX
+            this.y = e.pageY
+        }
+    </script>
+</head>
+<body>
+	<h1>业主信息管理</h1>
+	<table class="bordered new-bordered">
+		<tr>
+			<td><input type="text" style="width:175px;color:gray;height:20px;font-size:18px;" value="业主号" onfocus="if(this.value=='业主号'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='业主号'){this.value='业主号';this.style.color='gray';}"/><a id="inquire-submit">查询</a></td>
+		</tr>
+	</table>
+	<table class="bordered rules-bordered">
+		<thead>
+		<tr>       
+			<th>用户名</th>
+			<th>密码</th>  
+			<th>类别</th>
+			<th>房间号</th>
+			<th>编辑</th>			
+			<th>删除</th>      
+		</tr>
+		</thead>
+		<tr  id="1"> 
+			<td>1111111111</td>  
+			<td>1111111111</td>
+			<td>R</td>  
+			<td>A-101</td> 			
+			<td><a id="table-submit">编辑</a></td>  
+			<td><a id="table-submit">删除</a></td>   			
+		</tr>
+		<tr  id="2"> 
+			<td>1111111111</td>  
+			<td>1111111111</td>
+			<td>R</td>  
+			<td>A-101</td> 			
+			<td><a id="table-submit">编辑</a></td>  
+			<td><a id="table-submit">删除</a></td>   			
+		</tr>
+<tr  id="2"> 
+			<td>1111111111</td>  
+			<td>1111111111</td>
+			<td>R</td>  
+			<td>A-101</td> 			
+			<td><a id="table-submit">编辑</a></td>  
+			<td><a id="table-submit">删除</a></td>   			
+		</tr>
+<tr  id="2"> 
+			<td>1111111111</td>  
+			<td>1111111111</td>
+			<td>R</td>  
+			<td>A-101</td> 			
+			<td><a id="table-submit">编辑</a></td>  
+			<td><a id="table-submit">删除</a></td>   			
+		</tr>
+<tr  id="2"> 
+			<td>1111111111</td>  
+			<td>1111111111</td>
+			<td>R</td>  
+			<td>A-101</td> 			
+			<td><a id="table-submit">编辑</a></td>  
+			<td><a id="table-submit">删除</a></td>   			
+		</tr>
+<tr  id="2"> 
+			<td>1111111111</td>  
+			<td>1111111111</td>
+			<td>R</td>  
+			<td>A-101</td> 			
+			<td><a id="table-submit">编辑</a></td>  
+			<td><a id="table-submit">删除</a></td>   			
+		</tr> 		
+	</table>
+	<div id="showDiv">
+		<table>
+			<tr><th>姓名</th><td>张尼玛</td></tr>
+			<tr><th>性别</th><td>111111</td></tr>
+			<tr><th>电话</th><td>111111</td></tr>
+			<tr><th>邮箱</th><td>111111</td></tr>
+		</table>
+	</div>
+	<table class="page">
+		<tr>
+			<td><a href="">首页</a></td>
+			<td><a href="">上页</a></td>
+			<td style="width:50px;">1/5</td>
+			<td><a href="">下页</a></td>
+			<td><a href="">尾页</a></td>
+		</tr>
+	</table>
+</body>
+</html>

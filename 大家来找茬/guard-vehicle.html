@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>临时车辆登记</title>
+	<link type="text/css" href="css/table.css" rel="stylesheet" />
+	<link href="css/square/aero.css" rel="stylesheet">
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script src="js/icheck.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		  $('input').iCheck({
+			checkboxClass: 'icheckbox_square-aero',
+			radioClass: 'iradio_square-aero',
+			increaseArea: '20%' // optional
+		  });
+		});			
+	</script>
+</head>
+<body>
+	<h1>临时车辆登记</h1>
+	<table class="bordered new-bordered">
+		<tr>
+			<td><input type="text" style="width:200px;color:gray;height:20px;font-size:18px;" value="车牌号" onfocus="if(this.value=='车牌号'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='车牌号'){this.value='车牌号';this.style.color='gray';}"/><a id="inquire-submit">查询</a></td>
+			<td style="width:240px;">
+				<div id="radio">全部：<input type="radio" name="ifRead"/></div>
+				<div id="radio">未离：<input type="radio" name="ifRead"/></div>
+				<div id="radio">离开：<input type="radio" name="ifRead"/></div>
+			</td>
+		</tr>
+	</table>
+	<table class="bordered rules-bordered">
+		<thead>
+		<tr>
+			<th>车牌号</th>        
+			<th>姓名</th>
+			<th>电话</th>      
+			<th>进入时间</th>
+			<th>离开时间</th>
+			<th>状态</th>
+			<th>更新</th>
+			<th>删除</th>			
+		</tr>
+		</thead>
+		<tr> 
+			<td>辽A·QQ360</td>  
+			<td>张尼玛</td>  
+			<td>11111111111</td>  
+			<td>2014.10.10</td>
+			<td>1111111111</td>  
+			<td>20</td>			
+			<td><a id="table-submit">更新</a></td>  
+			<td><a id="table-submit">删除</a></td>
+		</tr>  		
+	</table>
+	<table class="page">
+		<tr>
+			<td><a href="">首页</a></td>
+			<td><a href="">上页</a></td>
+			<td style="width:50px;">1/5</td>
+			<td><a href="">下页</a></td>
+			<td><a href="">尾页</a></td>
+		</tr>
+	</table>
+	<a id="submit" href="guard-newvehichle.html">新增</a>
+	<a id="submit" href="guard-newvehichle.html">离开</a>
+	<input type="input" id="guard-vehicleinput"/>
+</body>
+</html>

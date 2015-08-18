@@ -1,0 +1,300 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>费用管理</title>
+	<link type="text/css" href="css/table.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="css/jscrollpane2.css" />
+	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+	<script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
+	<script type="text/javascript" src="js/scroll-startstop.events.jquery.js"></script>
+	<script type="text/javascript">
+			 jQuery(document).ready(function($) {
+			
+				// the element we want to apply the jScrollPane
+				var $el					= $('#jp-container').jScrollPane({
+					verticalGutter 	: -16
+				}),
+						
+				// the extension functions and options 	
+					extensionPlugin 	= {
+						
+						extPluginOpts	: {
+							// speed for the fadeOut animation
+							mouseLeaveFadeSpeed	: 500,
+							// scrollbar fades out after hovertimeout_t milliseconds
+							hovertimeout_t		: 1000,
+							// if set to false, the scrollbar will be shown on mouseenter and hidden on mouseleave
+							// if set to true, the same will happen, but the scrollbar will be also hidden on mouseenter after "hovertimeout_t" ms
+							// also, it will be shown when we start to scroll and hidden when stopping
+							useTimeout			: false,
+							// the extension only applies for devices with width > deviceWidth
+							deviceWidth			: 980
+						},
+						hovertimeout	: null, // timeout to hide the scrollbar
+						isScrollbarHover: false,// true if the mouse is over the scrollbar
+						elementtimeout	: null,	// avoids showing the scrollbar when moving from inside the element to outside, passing over the scrollbar
+						isScrolling		: false,// true if scrolling
+						addHoverFunc	: function() {
+							
+							// run only if the window has a width bigger than deviceWidth
+							if( $(window).width() <= this.extPluginOpts.deviceWidth ) return false;
+							
+							var instance		= this;
+							
+							// functions to show / hide the scrollbar
+							$.fn.jspmouseenter 	= $.fn.show;
+							$.fn.jspmouseleave 	= $.fn.fadeOut;
+							
+							// hide the jScrollPane vertical bar
+							var $vBar			= this.getContentPane().siblings('.jspVerticalBar').hide();
+							
+							/*
+							 * mouseenter / mouseleave events on the main element
+							 * also scrollstart / scrollstop - @James Padolsey : http://james.padolsey.com/javascript/special-scroll-events-for-jquery/
+							 */
+							$el.bind('mouseenter.jsp',function() {
+								
+								// show the scrollbar
+								$vBar.stop( true, true ).jspmouseenter();
+								
+								if( !instance.extPluginOpts.useTimeout ) return false;
+								
+								// hide the scrollbar after hovertimeout_t ms
+								clearTimeout( instance.hovertimeout );
+								instance.hovertimeout 	= setTimeout(function() {
+									// if scrolling at the moment don't hide it
+									if( !instance.isScrolling )
+										$vBar.stop( true, true ).jspmouseleave( instance.extPluginOpts.mouseLeaveFadeSpeed || 0 );
+								}, instance.extPluginOpts.hovertimeout_t );
+								
+								
+							}).bind('mouseleave.jsp',function() {
+								
+								// hide the scrollbar
+								if( !instance.extPluginOpts.useTimeout )
+									$vBar.stop( true, true ).jspmouseleave( instance.extPluginOpts.mouseLeaveFadeSpeed || 0 );
+								else {
+								clearTimeout( instance.elementtimeout );
+								if( !instance.isScrolling )
+										$vBar.stop( true, true ).jspmouseleave( instance.extPluginOpts.mouseLeaveFadeSpeed || 0 );
+								}
+								
+							});
+							
+							if( this.extPluginOpts.useTimeout ) {
+								
+								$el.bind('scrollstart.jsp', function() {
+								
+									// when scrolling show the scrollbar
+									clearTimeout( instance.hovertimeout );
+									instance.isScrolling	= true;
+									$vBar.stop( true, true ).jspmouseenter();
+									
+								}).bind('scrollstop.jsp', function() {
+									
+									// when stop scrolling hide the scrollbar (if not hovering it at the moment)
+									clearTimeout( instance.hovertimeout );
+									instance.isScrolling	= false;
+									instance.hovertimeout 	= setTimeout(function() {
+										if( !instance.isScrollbarHover )
+											$vBar.stop( true, true ).jspmouseleave( instance.extPluginOpts.mouseLeaveFadeSpeed || 0 );
+									}, instance.extPluginOpts.hovertimeout_t );
+									
+								});
+								
+								// wrap the scrollbar
+								// we need this to be able to add the mouseenter / mouseleave events to the scrollbar
+								var $vBarWrapper	= $('<div/>').css({
+									position	: 'absolute',
+									left		: $vBar.css('left'),
+									top			: $vBar.css('top'),
+									right		: $vBar.css('right'),
+									bottom		: $vBar.css('bottom'),
+									width		: $vBar.width(),
+									height		: $vBar.height()
+								}).bind('mouseenter.jsp',function() {
+									
+									clearTimeout( instance.hovertimeout );
+									clearTimeout( instance.elementtimeout );
+									
+									instance.isScrollbarHover	= true;
+									
+									// show the scrollbar after 100 ms.
+									// avoids showing the scrollbar when moving from inside the element to outside, passing over the scrollbar								
+									instance.elementtimeout	= setTimeout(function() {
+										$vBar.stop( true, true ).jspmouseenter();
+									}, 100 );	
+									
+								}).bind('mouseleave.jsp',function() {
+									
+									// hide the scrollbar after hovertimeout_t
+									clearTimeout( instance.hovertimeout );
+									instance.isScrollbarHover	= false;
+									instance.hovertimeout = setTimeout(function() {
+										// if scrolling at the moment don't hide it
+										if( !instance.isScrolling )
+											$vBar.stop( true, true ).jspmouseleave( instance.extPluginOpts.mouseLeaveFadeSpeed || 0 );
+									}, instance.extPluginOpts.hovertimeout_t );
+									
+								});
+								
+								$vBar.wrap( $vBarWrapper );
+							
+							}
+						
+						}
+						
+					},
+					
+					// the jScrollPane instance
+					jspapi 			= $el.data('jsp');
+					
+				// extend the jScollPane by merging	
+				$.extend( true, jspapi, extensionPlugin );
+				jspapi.addHoverFunc();
+			
+			});
+	</script>
+</head>
+<body>
+<div id="jp-container" style="float:left;width:650px;height:530px;">
+	<h1>费用管理</h1>
+	<table class="bordered new-bordered">
+		<tr>
+			<td><input type="text" style="width:200px;color:gray;height:20px;font-size:18px;" value="车牌号" onfocus="if(this.value=='车牌号'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='车牌号'){this.value='车牌号';this.style.color='gray';}"/><a id="inquire-submit">查询</a></td>
+		</tr>
+	</table>
+	<table class="bordered rules-bordered">
+		<thead>
+		<tr>
+			<th>编号</th>
+			<th>社区号</th>        
+			<th>房间号</th>	
+			<th>年</th>
+			<th>月</th>
+			<th>维修费</th>        
+			<th>管理费</th>
+			<th>垃圾处理费</th>
+			<th>公共水费</th>        
+			<th>公共电费</th>
+			<th>电梯费</th>
+			<th>私人水费</th>        
+			<th>私人电费</th>
+			<th>固定车位费</th>
+			<th>状态</th>	
+			<th>支付时间</th>
+			<th>编辑</th>	
+			<th>删除</th>
+		</tr>
+		</thead>
+		<tr> 
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td><td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>11</td>
+			<td><a id="table-submit">编辑</a></td>
+			<td><a id="table-submit">删除</a></td>     			
+		</tr>
+		<tr> 
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td><td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>11</td>
+			<td><a id="table-submit">编辑</a></td>
+			<td><a id="table-submit">删除</a></td>     			
+		</tr>
+		<tr> 
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td><td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>11</td>
+			<td><a id="table-submit">编辑</a></td>
+			<td><a id="table-submit">删除</a></td>     			
+		</tr>
+		<tr> 
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td><td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>11</td>
+			<td><a id="table-submit">编辑</a></td>
+			<td><a id="table-submit">删除</a></td>     			
+		</tr>
+		<tr> 
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td><td>111</td>  
+			<td>辽A</td>		
+			<td>22</td>  
+			<td>30</td> 
+			<td>11</td>
+			<td>11</td>
+			<td><a id="table-submit">编辑</a></td>
+			<td><a id="table-submit">删除</a></td>     			
+		</tr>
+	</table>
+	<table class="page">
+		<tr>
+			<td><a href="">首页</a></td>
+			<td><a href="">上页</a></td>
+			<td style="width:50px;">1/5</td>
+			<td><a href="">下页</a></td>
+			<td><a href="">尾页</a></td>
+		</tr>
+	</table>
+	<a id="submit" href="admin-newparking.html">新增</a>
+</div>
+</body>
+</html>
